@@ -43,9 +43,20 @@ const Hero = ({ onNavigateToLogin, onNavigateToSignUp, onNavigateToProfile, onLo
       {/* Main Content */}
       <div className="hero-content">
         {/* Course Announcement */}
-        <div className="hero-announcement">
-          🎯 Skill Hunt Begins – Dive Into the Network →
-        </div>
+        <div 
+        className="hero-announcement clickable"
+        onClick={() => {
+        if (isAuthenticated) {
+          onNavigateToProfile();
+        } else {
+        alert('Please login to access your profile!');
+        }
+      }}
+>
+  🎯 Skill Hunt Begins – Dive Into the Network →
+</div>
+
+
 
         {/* Main Headline */}
         <h1 className="hero-title">

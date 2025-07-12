@@ -1427,6 +1427,7 @@ main {
   }
 }
 
+<<<<<<< HEAD
 /* Brief Component Styles */
 .brief-container {
   background: #000;
@@ -1911,4 +1912,16 @@ main {
   border-radius: 10px;
   border: 1px solid #333;
   margin: 20px 0;
+=======
+.clickable {
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: bold;
+  color: #ffffff;
+  transition: transform 0.2s ease;
+}
+
+.clickable:hover {
+  transform: scale(1.02);
+>>>>>>> 9c738cc7b14781504aa51c133072b467fa5aee73
 }
