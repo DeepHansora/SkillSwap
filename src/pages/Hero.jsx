@@ -1,7 +1,13 @@
 import React from 'react';
 import HeroImg from "../assets/Hero.png";
+import Avatar1 from "../assets/p1.jpg";
+import Avatar2 from "../assets/p2.jpg";
+import Avatar3 from "../assets/p3.jpg";
+import Avatar4 from "../assets/p4.jpg";
 
 const Hero = ({ onNavigateToLogin, onNavigateToSignUp }) => {
+  const avatars = [Avatar1, Avatar2, Avatar3, Avatar4];
+
   return (
     <div 
       className="hero-container"
@@ -46,15 +52,12 @@ const Hero = ({ onNavigateToLogin, onNavigateToSignUp }) => {
         {/* Student Avatars and Count */}
         <div className="hero-social-proof">
           <div className="hero-avatars">
-            {[1, 2, 3, 4].map((i) => (
-              <div 
-                key={i} 
-                className="hero-avatar"
-                style={{ backgroundColor: `hsl(${i * 60}, 70%, 60%)` }}
-              >
-                👤
+            {avatars.map((img, index) => (
+              <div key={index} className="hero-avatar">
+               <img src={img} alt={`User ${index + 1}`} className="avatar-img" />
               </div>
             ))}
+
           </div>
           <p className="hero-student-count">
             Over 1500+ students
