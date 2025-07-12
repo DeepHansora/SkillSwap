@@ -31,7 +31,7 @@ const Hero = ({ onNavigateToLogin, onNavigateToSignUp }) => {
       <div className="hero-content">
         {/* Course Announcement */}
         <div className="hero-announcement">
-          🎯 Introducing new course: Skill Exchange Platform →
+          🎯 Skill Hunt Begins – Dive Into the Network →
         </div>
 
         {/* Main Headline */}
@@ -46,7 +46,7 @@ const Hero = ({ onNavigateToLogin, onNavigateToSignUp }) => {
 
         {/* CTA Button */}
         <button className="hero-cta">
-          Explore courses →
+          Level Up Your Skills →
         </button>
 
         {/* Student Avatars and Count */}
