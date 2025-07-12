@@ -1427,3 +1427,14 @@ main {
   }
 }
 
+.clickable {
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: bold;
+  color: #ffffff;
+  transition: transform 0.2s ease;
+}
+
+.clickable:hover {
+  transform: scale(1.02);
+}
