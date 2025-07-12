@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Login = ({ onBackToHome, onNavigateToSignUp }) => {
+const Login = ({ onBackToHome, onNavigateToSignUp, onLoginSuccess }) => {
 
   const [formData, setFormData] = useState({
     email: '',
@@ -43,9 +43,9 @@ const Login = ({ onBackToHome, onNavigateToSignUp }) => {
         // Clear form
         setFormData({ email: '', password: '' });
         
-        // Redirect to home after 1 second
+        // Redirect to profile after 1 second
         setTimeout(() => {
-          onBackToHome();
+          onLoginSuccess();
         }, 1000);
       }
     } catch (error) {

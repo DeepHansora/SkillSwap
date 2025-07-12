@@ -5,7 +5,7 @@ import Avatar2 from "../assets/p2.jpg";
 import Avatar3 from "../assets/p3.jpg";
 import Avatar4 from "../assets/p4.jpg";
 
-const Hero = ({ onNavigateToLogin, onNavigateToSignUp }) => {
+const Hero = ({ onNavigateToLogin, onNavigateToSignUp, onNavigateToProfile, onLogout, isAuthenticated }) => {
   const avatars = [Avatar1, Avatar2, Avatar3, Avatar4];
 
   return (
@@ -19,12 +19,25 @@ const Hero = ({ onNavigateToLogin, onNavigateToSignUp }) => {
           SWAPSKILLS
         </div>
         <div className="hero-auth-buttons">
-          <button className="hero-btn hero-btn--signup" onClick={onNavigateToSignUp}>
-            Sign Up
-          </button>
-          <button className="hero-btn hero-btn--login" onClick={onNavigateToLogin}>
-            Login
-          </button>
+          {isAuthenticated ? (
+            <>
+              <button className="hero-btn hero-btn--profile" onClick={onNavigateToProfile}>
+                Profile
+              </button>
+              <button className="hero-btn hero-btn--logout" onClick={onLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <button className="hero-btn hero-btn--signup" onClick={onNavigateToSignUp}>
+                Sign Up
+              </button>
+              <button className="hero-btn hero-btn--login" onClick={onNavigateToLogin}>
+                Login
+              </button>
+            </>
+          )}
         </div>
       </div>
       {/* Main Content */}

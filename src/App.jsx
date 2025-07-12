@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Hero from './pages/Hero';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import Profile from './pages/Profile';
 
 const App = () => {
   const [currentPage, setCurrentPage] = useState('hero');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  // Check authentication status on app load
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    if (token && user) {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   const handleNavigateToLogin = () => {
     setCurrentPage('login');
@@ -14,7 +25,23 @@ const App = () => {
     setCurrentPage('signup');
   };
 
+  const handleNavigateToProfile = () => {
+    setCurrentPage('profile');
+  };
+
   const handleBackToHome = () => {
+    setCurrentPage('hero');
+  };
+
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+    setCurrentPage('profile');
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setIsAuthenticated(false);
     setCurrentPage('hero');
   };
 
@@ -23,16 +50,27 @@ const App = () => {
       {currentPage === 'hero' ? (
         <Hero 
           onNavigateToLogin={handleNavigateToLogin} 
-          onNavigateToSignUp={handleNavigateToSignUp} 
+          onNavigateToSignUp={handleNavigateToSignUp}
+          onNavigateToProfile={handleNavigateToProfile}
+          onLogout={handleLogout}
+          isAuthenticated={isAuthenticated}
         />
       ) : currentPage === 'login' ? (
-        // ✅ Add this line 👇 so that "Create Account" in Login page can navigate to SignUp
         <Login 
           onBackToHome={handleBackToHome} 
-          onNavigateToSignUp={handleNavigateToSignUp} 
+          onNavigateToSignUp={handleNavigateToSignUp}
+          onLoginSuccess={handleLoginSuccess}
+        />
+      ) : currentPage === 'signup' ? (
+        <SignUp 
+          onBackToHome={handleBackToHome}
+          onNavigateToLogin={handleNavigateToLogin}
         />
       ) : (
-        <SignUp onBackToHome={handleBackToHome} />
+        <Profile 
+          onBackToHome={handleBackToHome}
+          onLogout={handleLogout}
+        />
       )}
     </div>
   );
