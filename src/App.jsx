@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Hero from './pages/Hero';
+import Brief from './pages/Brief';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Profile from './pages/Profile';
@@ -46,15 +47,18 @@ const App = () => {
   };
 
   return (
-    <div style={{ margin: 0, padding: 0, width: '100vw', height: '100vh' }}>
+    <div style={{ margin: 0, padding: 0, width: '100vw' }}>
       {currentPage === 'hero' ? (
-        <Hero 
-          onNavigateToLogin={handleNavigateToLogin} 
-          onNavigateToSignUp={handleNavigateToSignUp}
-          onNavigateToProfile={handleNavigateToProfile}
-          onLogout={handleLogout}
-          isAuthenticated={isAuthenticated}
-        />
+        <>
+          <Hero 
+            onNavigateToLogin={handleNavigateToLogin} 
+            onNavigateToSignUp={handleNavigateToSignUp}
+            onNavigateToProfile={handleNavigateToProfile}
+            onLogout={handleLogout}
+            isAuthenticated={isAuthenticated}
+          />
+          <Brief />
+        </>
       ) : currentPage === 'login' ? (
         <Login 
           onBackToHome={handleBackToHome} 

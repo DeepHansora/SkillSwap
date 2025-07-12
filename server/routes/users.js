@@ -59,7 +59,25 @@ router.put('/profile', [
     .optional()
     .trim()
     .isLength({ max: 100 })
-    .withMessage('Country name cannot exceed 100 characters')
+    .withMessage('Country name cannot exceed 100 characters'),
+  body('skills')
+    .optional()
+    .isArray()
+    .withMessage('Skills must be an array'),
+  body('skills.*.name')
+    .optional()
+    .trim()
+    .isLength({ min: 1, max: 100 })
+    .withMessage('Skill name must be between 1 and 100 characters'),
+  body('skills.*.level')
+    .optional()
+    .isIn(['Beginner', 'Intermediate', 'Advanced', 'Expert'])
+    .withMessage('Skill level must be one of: Beginner, Intermediate, Advanced, Expert'),
+  body('skills.*.category')
+    .optional()
+    .trim()
+    .isLength({ min: 1, max: 50 })
+    .withMessage('Skill category must be between 1 and 50 characters')
 ], async (req, res) => {
   try {
     // Check for validation errors
@@ -81,7 +99,7 @@ router.put('/profile', [
     }
 
     // Update allowed fields
-    const allowedUpdates = ['name', 'bio', 'location', 'socialLinks', 'preferences'];
+    const allowedUpdates = ['name', 'bio', 'location', 'socialLinks', 'preferences', 'skills'];
     const updates = {};
 
     allowedUpdates.forEach(field => {

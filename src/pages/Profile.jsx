@@ -31,7 +31,43 @@ const Profile = ({ onBackToHome, onLogout }) => {
         name: userData.name || ''
       }));
     }
+    
+    // Fetch profile data from backend
+    fetchProfileData();
   }, []);
+
+  const fetchProfileData = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      const response = await fetch('/api/users/profile', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        // Map backend skills to frontend format
+        const skillsOffered = userData.skills ? userData.skills.map(skill => skill.name) : [];
+        
+        setProfileData(prev => ({
+          ...prev,
+          name: userData.name || prev.name,
+          location: userData.location || '',
+          phone: userData.phone || '',
+          occupation: userData.occupation || 'student',
+          skillsOffered: skillsOffered,
+          availability: userData.availability || 'weekends',
+          profileType: userData.profileType || 'public'
+        }));
+      }
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -80,12 +116,58 @@ const Profile = ({ onBackToHome, onLogout }) => {
     setMessage('');
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setMessage('Profile updated successfully!');
-      setIsEditing(false);
-      setTimeout(() => setMessage(''), 3000);
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setError('Authentication required. Please log in again.');
+        setLoading(false);
+        return;
+      }
+
+      // Convert skills to backend format
+      const skills = profileData.skillsOffered.map(skillName => ({
+        name: skillName,
+        level: 'intermediate', // Default level, can be enhanced later
+        category: 'general' // Default category, can be enhanced later
+      }));
+
+      const updateData = {
+        name: profileData.name,
+        location: profileData.location,
+        phone: profileData.phone,
+        occupation: profileData.occupation,
+        availability: profileData.availability,
+        profileType: profileData.profileType,
+        skills: skills
+      };
+
+      const response = await fetch('/api/users/profile', {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updateData)
+      });
+
+      if (response.ok) {
+        const updatedUser = await response.json();
+        // Update localStorage user data
+        const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+        localStorage.setItem('user', JSON.stringify({
+          ...currentUser,
+          name: updatedUser.name
+        }));
+        
+        setMessage('Profile updated successfully!');
+        setIsEditing(false);
+        setTimeout(() => setMessage(''), 3000);
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || 'Failed to save profile. Please try again.');
+      }
     } catch (err) {
-      setError('Failed to save profile. Please try again.');
+      console.error('Error saving profile:', err);
+      setError('Network error. Please check your connection and try again.');
     } finally {
       setLoading(false);
     }
@@ -115,7 +197,7 @@ const Profile = ({ onBackToHome, onLogout }) => {
             onClick={() => setActiveTab('courses')}
           >
             <span className="profile-sidebar-icon">📚</span>
-            Enrolled Courses
+            My Swap Requests
           </button>
         </nav>
       </div>
@@ -374,14 +456,21 @@ const Profile = ({ onBackToHome, onLogout }) => {
               </div>
             </>
           )}
+          {activeTab === 'swaps' && (
+  <div className="swaps-section">
+    <h3>My Swap Requests</h3>
+    <p>View and manage your current and pending swap offers here.</p>
+    {/* Future list rendering */}
+  </div>
+)}
 
           {activeTab === 'courses' && (
             <div className="courses-section">
-              <h3>Enrolled Courses</h3>
+              <h3>Pending Request</h3>
               <div className="courses-placeholder">
-                <p>No courses enrolled yet. Start exploring courses to enhance your skills!</p>
+                <p>No requests yet. Start exploring other SkillSwappers to enhance your skills!</p>
                 <button className="profile-btn">
-                  Browse Courses
+                  Browse SkillSwappers
                 </button>
               </div>
             </div>
