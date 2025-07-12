@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const Login = ({ onBackToHome }) => {
+const Login = ({ onBackToHome, onNavigateToSignUp }) => {
+
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -144,6 +145,25 @@ const Login = ({ onBackToHome }) => {
             {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
+        {/* Create Account Button */}
+        <div style={{ marginTop: "10px", marginBottom: "20px" }}>
+          <button
+            className="login-button"
+            style={{
+              background: "transparent",
+              border: "1px solid rgba(255, 255, 255, 0.3)",
+              color: "#fff",
+              fontSize: "14px",
+              padding: "10px 20px",
+              fontWeight: "500"
+            }}
+            onClick={onNavigateToSignUp}
+ // You can change this to `onNavigateToSignUp` if available
+          >
+            Create an Account
+          </button>
+        </div>
+
 
         {/* Divider */}
         <div className="login-divider">
