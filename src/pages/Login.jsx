@@ -1,22 +1,72 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const Login = ({ onBackToHome }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    // Clear messages when user types
+    if (error) setError('');
+    if (message) setMessage('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Login form submitted:', formData);
+    setLoading(true);
+    setError('');
+    setMessage('');
+
+    try {
+      // Make API call to login user
+      const response = await axios.post('http://localhost:5000/api/auth/login', {
+        email: formData.email,
+        password: formData.password
+      });
+
+      if (response.data.status === 'success') {
+        setMessage('Login successful! Welcome back.');
+        // Store token in localStorage
+        localStorage.setItem('token', response.data.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.data.user));
+        
+        // Clear form
+        setFormData({ email: '', password: '' });
+        
+        // Redirect to home after 1 second
+        setTimeout(() => {
+          onBackToHome();
+        }, 1000);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      console.error('Error response:', error.response);
+      console.error('Error message:', error.message);
+      
+      if (error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else if (error.response?.data?.errors) {
+        const errorMessages = error.response.data.errors.map(err => err.msg).join(', ');
+        setError(errorMessages);
+      } else if (error.code === 'ECONNREFUSED') {
+        setError('Cannot connect to server. Please make sure the backend is running.');
+      } else if (error.code === 'ERR_NETWORK') {
+        setError('Network error. Please check your connection.');
+      } else {
+        setError(`Error: ${error.message || 'Something went wrong. Please try again.'}`);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,6 +86,37 @@ const Login = ({ onBackToHome }) => {
         <p className="login-subtitle">
           Sign in to explore, share and grow together
         </p>
+
+        {/* Success/Error Messages */}
+        {message && (
+          <div style={{
+            backgroundColor: 'rgba(34, 197, 94, 0.2)',
+            border: '1px solid rgba(34, 197, 94, 0.3)',
+            color: '#22c55e',
+            padding: '12px',
+            borderRadius: '8px',
+            marginBottom: '20px',
+            fontSize: '14px',
+            textAlign: 'center'
+          }}>
+            {message}
+          </div>
+        )}
+
+        {error && (
+          <div style={{
+            backgroundColor: 'rgba(239, 68, 68, 0.2)',
+            border: '1px solid rgba(239, 68, 68, 0.3)',
+            color: '#ef4444',
+            padding: '12px',
+            borderRadius: '8px',
+            marginBottom: '20px',
+            fontSize: '14px',
+            textAlign: 'center'
+          }}>
+            {error}
+          </div>
+        )}
 
         {/* Login Form */}
         <form className="login-form" onSubmit={handleSubmit}>
@@ -59,8 +140,8 @@ const Login = ({ onBackToHome }) => {
             required
           />
           
-          <button type="submit" className="login-button">
-            Sign In
+          <button type="submit" className="login-button" disabled={loading}>
+            {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 
