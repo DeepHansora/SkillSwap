@@ -1634,8 +1634,8 @@ main {
 }
 
 .illustration-placeholder {
-  height: 120px;
-  background: #000;
+  height: 300px;
+  background: #ffffff;
   border-radius: 15px;
   display: flex;
   align-items: center;
@@ -1654,6 +1654,11 @@ main {
   position: absolute;
   border-radius: 50%;
   opacity: 0.6;
+}
+.illutrator-pic{
+   width: 50%;
+  height: 50%;
+  object-fit: cover;
 }
 
 .element-1 {

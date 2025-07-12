@@ -9,6 +9,7 @@ import dotenv from 'dotenv';
 // Import routes
 import authRoutes from './routes/auth.js';
 import userRoutes from './routes/users.js';
+import swapRequestRoutes from './routes/swapRequests.js';
 
 // Import middleware
 import { errorHandler } from './middleware/errorHandler.js';
@@ -65,6 +66,7 @@ app.get('/api/health', (req, res) => {
 // API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/swap-requests', swapRequestRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {

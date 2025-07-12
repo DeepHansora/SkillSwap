@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 const Brief = () => {
   const [activeTab, setActiveTab] = useState('All Skills');
 
-  // Demo skill data
+  // Demo skill data with dynamic imageSrc
   const demoSkills = [
     {
       name: "React Development",
       category: "Programming",
+      imageSrc: "src/assets/LktghhB3F7Z7uktlm5ttkbVXogE.svg",
       providers: [
         {
           name: "Sarah Chen",
@@ -26,6 +27,7 @@ const Brief = () => {
     {
       name: "Digital Marketing",
       category: "Business",
+      imageSrc: "src/assets/uEpJGJLIkSHeJLNyzVayfiOdZ9U.svg",
       providers: [
         {
           name: "Emma Rodriguez",
@@ -38,6 +40,7 @@ const Brief = () => {
     {
       name: "Guitar Lessons",
       category: "Music",
+      imageSrc: "src/assets/ujjVjiL7DhGglIg7PRfF5EEa0k.svg",
       providers: [
         {
           name: "Alex Thompson",
@@ -62,6 +65,7 @@ const Brief = () => {
     {
       name: "Photoshop Design",
       category: "Design",
+      imageSrc: "/assets/photoshop-illustration.svg",
       providers: [
         {
           name: "Jessica Park",
@@ -74,6 +78,7 @@ const Brief = () => {
     {
       name: "Python Programming",
       category: "Programming",
+      imageSrc: "/assets/python-illustration.svg",
       providers: [
         {
           name: "Carlos Santos",
@@ -92,6 +97,7 @@ const Brief = () => {
     {
       name: "Spanish Tutoring",
       category: "Language",
+      imageSrc: "/assets/spanish-illustration.svg",
       providers: [
         {
           name: "Maria Gonzalez",
@@ -221,9 +227,7 @@ const Brief = () => {
                 <div className="course-illustration">
                   <div className="illustration-placeholder">
                     <div className="illustration-elements">
-                      <div className="element-1"></div>
-                      <div className="element-2"></div>
-                      <div className="element-3"></div>
+                      <img className="illustrator-pic" src={skill.imageSrc} alt={skill.name} />
                     </div>
                   </div>
                 </div>
